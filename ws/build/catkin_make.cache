@@ -1,0 +1,2 @@
+tf2_web_republisher
+-DCATKIN_DEVEL_PREFIX=/home/phil/work/QtProject/WebManger/ws/devel -DCMAKE_INSTALL_PREFIX=/home/phil/work/QtProject/WebManger/ws/install -G Unix Makefiles

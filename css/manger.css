@@ -1,0 +1,65 @@
+.biaoti{
+    width: 1920px;
+    height: 40px;
+    background-color: #55585a;
+}
+.lef{
+    float: left;
+    width: 271px;
+    height: 900px;
+    color: rgb(255, 255, 255);
+    background-color:darkgrey
+    
+}
+
+.lef .fenge{
+    float: left;
+    
+    width: 270px;
+    height: 1px;
+    background-color:rgb(255, 255, 255)
+}
+
+
+.lef .sensor{
+    float: left;
+    width: 270px;
+    height: 221px;
+    color: rgb(30, 28, 28);
+    background-color:rgb(92, 90, 90)
+}
+
+.lef .sensor p{
+    color: #fff;
+}
+
+
+.lef .sensor button{
+    width: 110px;
+    height: 40px;
+    background-color: #55585a;
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+    text-indent: 0em;
+    line-height: 40px;
+    margin-left: 1em;
+    margin-top: 1em;
+
+
+}
+
+.cen{
+    float: left;
+    width: 1200px;
+    height: 900px;
+    color: rgb(235, 221, 221);
+    background-color:rgb(235, 195, 195)
+}
+.rig{
+    float: left;
+    width: 351px;
+    height: 900px;
+    color: rgb(235, 221, 221);
+    background-color:rgb(10, 10, 10)
+}

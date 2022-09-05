@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangerV1.0</title>
+    <link rel="stylesheet" href="css/mangerv1.css">
+
+    <script src="http://static.robotwebtools.org/EaselJS/current/easeljs.min.js"></script>
+    <script src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script src="http://static.robotwebtools.org/roslibjs/current/roslib.js"></script>
+    <script src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script src="js/mjpegcanvasjs/build/mjpegcanvas.min.js"></script>
+    <script src="https://static.robotwebtools.org/threejs/current/three.js"></script>
+    <script src="js/ros3djs/build/ros3d.js"></script>
+    <script src="http://static.robotwebtools.org/ros2djs/current/ros2d.js"></script>
+    <script src="js/nav2djs/src/Nav2D.js"></script>
+    <script src="js/nav2djs/src/navigator/ImageMapClientNav.js"></script>
+    <script src="js/nav2djs/src/navigator/Navigator.js"></script>
+    <script src="js/nav2djs/src/navigator/OccupancyGridClientNav.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+    <div>
+        <div id="container">
+            <div id="control-panel">
+                <header>
+                    <div id="logo"> <img src="image/logo.png" alt="logo"></div>
+                    <div id="tabs">
+                        <div class="tab active" id="MessIndex">信息</div>
+                        <div class="tab" id="ShaPanIndex">沙盘</div>
+                        <div class="tab" id="carmap" onclick="mapprocess()">地图</div>
+                    </div>
+                </header>
+                <div class="item" style="display: block;" id="carare">
+                    <h4>车辆数量</h4>
+                    <div>
+                        <div class=" css-1nssnj5" height="26">
+                            <div height="26" class="css-8lbdfh">
+                                <select id="car_num" height="26" tabindex="0" 
+                                onchange="numChange()" class="css-3kuuxv">
+                                    <option value="请选择">请选择</option>
+                                    <option value="1辆">1辆</option>
+                                    <option value="2辆">2辆</option>
+                                    <option value="3辆">3辆</option>
+                                </select>
+                                <div height="26" class="css-u3suiv"><svg width="100%" viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"></path>
+                                    </svg></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caimage" id="carid1"><img src="image/cars.jpg" alt=""
+                            style="width: 200px;margin: 0px 52px;">
+                        <p class="carol">车辆1</p>
+                    </div>
+                    <div class="caimage" id="carid2"><img src="image/cars.jpg" alt=""
+                            style="width: 200px;margin: 0px 52px;">
+                        <p class="carol">车辆2</p>
+                    </div>
+                    <div class="caimage" id="carid3"><img src="image/cars.jpg" alt=""
+                            style="width: 200px;margin: 0px 52px;">
+                        <p class="carol">车辆3</p>
+                    </div>
+
+                </div>
+                <div class="item" id="Messcarare">
+                    <div class="carpos">
+                        <div class="postext">
+                            <div class="css-vxcmzt">
+                                <div class="css-0">Position</div>
+                            </div>
+                        </div>
+                        <div id="poschart"></div>
+                    </div>
+                    <div class="carpos">
+                        <div class="postext">
+                            <div class="css-vxcmzt">
+                                <div class="css-0">Velocity</div>
+                            </div>
+                        </div>
+                        <div id="velocitychart"></div>
+                    </div>
+                    <div class="carpos">
+                        <div class="postext">
+                            <div class="css-vxcmzt">
+                                <div class="css-0">Acceleration</div>
+                            </div>
+                        </div>
+                        <div id="accleratechart"></div>
+                    </div>
+                </div>
+                <div class="item" id="Mapcarare">
+                    <div id="goalstyle">
+                        <div style="margin-left: 10px; margin-bottom: -16px; margin-top: 15px;">目标点</div>
+                        <div id="goaltabs">
+                            <div class="tab active" >位置X</div>
+                            <div class="tab" id="car_posx"></div>
+                        </div>
+                        <div id="goaltabs">
+                            <div class="tab active" >位置Y</div>
+                            <div class="tab" id="car_posy"></div>
+                        </div>
+                        <div id="goaltabs">
+                            <div class="tab active" >位置Yaw</div>
+                            <div class="tab" id="car_posyaw"></div>
+                        </div>
+                        <div id="goaltabs">
+                            <div class="tab active">期望速度</div>
+                            <input type="text"  name="usrname" class="tab" style="width: 142px;">
+                        </div>
+                        <div class="pose_button">
+                            <butto type="button" class="push_button" id="Posbutton">清除</butto>
+                            <butto type="button" class="push_button" id="Posebutton2">确定</butto>
+                        </div>
+
+                        
+
+                    </div>
+                    <div id="Mulgoal">
+                        <div style="margin-left: 10px; margin-top: 16px; margin-bottom: 7px;">多目标点</div>
+                        <table id="customers">
+                            <tr>
+                              <th scope="row">序号</th>
+                              <th>X</th>
+                              <th>Y</th>
+                            </tr>
+                          
+                            <tr>
+                              <th>1</th>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          
+                            <tr>
+                              <th>2</th>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                                <th>3</th>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <th>4</th>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <th>5</th>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <th>6</th>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                          </table>
+                        <div class="pose_button">
+                            <butto type="button" class="push_button">清除</butto>
+                            <butto type="button" class="push_button" id="MulGoalButton">确定</butto>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="hud">
+                <div class="hub-column">
+                    <div class="css-2lb4ch">
+                        <div class="autonomy-state" style="background: rgb(71, 178, 117);">autonomous</div>
+                    </div>
+                    <div class="css-4phjkz">
+                        <div style="line-height: 0; text-align: center;">
+                            <svg viewBox="0 0 18 16" class="css-r5ec2e">
+                                <path d="M0,8 L8,16 L8,11 L18,11 L18,5 L8,5 L8,0z"></path>
+                            </svg>
+                            <svg viewBox="0 0 18 16" class="css-r5ec2e">
+                                <path d="M18,8 L10,16 L10,11 L0,11 L0,5 L10,5 L10,0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="css-2lb4ch">
+                        <div>
+                            <div>
+                                <div style="display: flex;">
+                                    <div class="css-xwl1qf">
+                                        <div class="css-105jv7o">
+
+                                        </div>
+                                        <div id="pos">0,0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="css-1w2kk23">Position</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="css-2lb4ch">
+                    <div>
+                        <svg width="100" height="58">
+                            <path d="M 12 50 a 38 38 1 1 1 76 0" fill="none" stroke-width="8" class="css-swgk1y">
+                            </path>
+                            <g transform="translate(50 50) rotate(0) translate(-50 -50)">
+                                <circle cx="50" cy="4" r="2" class="css-1nok5sc"></circle>
+                            </g>
+                            <g transform="translate(50 50) rotate(0) translate(-50 -50)">
+                                <line x1="50" y1="50" x2="50" y2="20" class="css-15glemy"></line>
+                            </g>
+                        </svg>
+                        <div>
+                            <div style="display: flex;">
+                                <div class="css-isy1iu">
+                                    <div class="css-105jv7o"></div>
+                                    <div id="CarAnguler">-0.00</div>
+                                </div>
+                            </div>
+                            <div class="css-1w2kk23">Angular</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="css-2lb4ch">
+                    <div ><svg width="100" height="58">
+                            <path d="M 12 50 a 38 38 1 1 1 76 0" fill="none" stroke-width="8" class="css-swgk1y"></path>
+                            <g transform="translate(50 50) rotate(0) translate(-50 -50)">
+                                <circle cx="50" cy="4" r="2" class="css-1nok5sc"></circle>
+                            </g>
+                            <g  id="speed_sig" transform="translate(50 50) rotate(0) translate(-50 -50)">
+                                <line x1="50" y1="50" x2="50" y2="20" class="css-15glemy"></line>
+                            </g>
+                        </svg>
+                        <div>
+                            <div style="display: flex;">
+                                <div class="css-isy1iu">
+                                    <div class="css-105jv7o"></div>
+                                    <div id="showspeed">0.00</div>
+                                </div>
+                            </div>
+                            <div class="css-1w2kk23">Speed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="showare">
+            
+
+            <div id="showShapan">
+
+
+                <div id="car1cfg">
+                    <div style="height: 30px;background: #333;text-align: center;color: aliceblue;font-weight:500;">配置1 
+                        <input type="image" src="image/Untitled1.png" height="30" style="float: right;" name="close"  onclick="Closecfg1(1)" />
+                    </div>
+                   
+    
+                    <div class="cfstyle">
+                        <form>
+                            IP：<input type="text" id="car1ip"> <br>
+                            端口：<input type="text" id="car1port"> <br>
+                        </form>
+    
+                    </div>
+                    <button style="display:block;margin:1px 99px;height: 23px; width: 56px;" onclick="Carcfg_click(1)">确定</button>
+                    <div class="carmsg">相机数据</div>
+                    <div class="carmsg">雷达数据</div>
+                    <div class="carmsg">底层数据</div>
+
+                    <div class="carmsg1"><img src="image/f.png" id="car1cam" alt="" style="width: 30px;height: 30px;"></div>
+                    <div class="carmsg1"><img src="image/f.png" id="car1lidar" alt="" style="width: 30px;height: 30px;"></div>
+                    <div class="carmsg1"><img src="image/f.png" id="car1cmd" alt="" style="width: 30px;height: 30px;"></div>
+                </div>
+                <div id="car2cfg">
+                    <div style="height: 30px;background: #333;text-align: center;color: aliceblue;font-weight:500;">配置2 
+                        <input type="image" src="image/Untitled1.png" height="30" style="float: right;" name="close"  onclick="Closecfg1(2)" />
+                    </div>
+                   
+    
+                    <div class="cfstyle">
+                        <form>
+                            IP：<input type="text" id="car2ip"> <br>
+                            端口：<input type="text" id="car2port"> <br>
+                        </form>
+    
+                    </div>
+                    <button style="display:block;margin:1px 99px;height: 23px; width: 56px;" onclick="Carcfg_click(2)" >确定</button>
+                    <div class="carmsg">相机数据</div>
+                    <div class="carmsg">雷达数据</div>
+                    <div class="carmsg">底层数据</div>
+                    <div class="carmsg1"><img src="image/f.png" id="car2cam" alt="" style="width: 30px;height: 30px;"></div>
+                    <div class="carmsg1"><img src="image/f.png" id="car2lidar" alt="" style="width: 30px;height: 30px;"></div>
+                    <div class="carmsg1"><img src="image/f.png" id="car2cmd" alt="" style="width: 30px;height: 30px;"></div>
+                </div>
+                <div id="car3cfg">
+                    <div style="height: 30px;background: #333;text-align: center;color: aliceblue;font-weight:500;">配置3 
+                        <input type="image" src="image/Untitled1.png" height="30" style="float: right;" name="close"  onclick="Closecfg1(3)" />
+                    </div>
+                   
+    
+                    <div class="cfstyle">
+                        <form>
+                            IP：<input type="text" id="car3ip"> <br>
+                            端口：<input type="text" id="car3port"> <br>
+    
+                        </form>
+                    </div>
+                    <button style="display:block;margin:1px 99px;height: 23px; width: 56px;"  onclick="Carcfg_click(3)">确定</button>
+                    <div class="carmsg">相机数据</div>
+                    <div class="carmsg">雷达数据</div>
+                    <div class="carmsg">底层数据</div>
+                    <div class="carmsg1"><img src="image/f.png" id="car3cam" alt="" style="width: 30px;height: 30px;"></div>
+                    <div class="carmsg1"><img src="image/f.png" id="car3lidar" alt="" style="width: 30px;height: 30px;"></div>
+                    <div class="carmsg1"><img src="image/f.png" id="car3cmd"alt="" style="width: 30px;height: 30px;"></div>
+                </div>
+    
+                <div id="carcontrol">
+                    <div id="cartitle">车辆控制</div>
+                    <!-- <h4 class="cartext">控制方式</h4> -->
+                    <div>
+                        <div class=" css-1nssnj5" height="26">
+                            <div height="26" class="css-8lbdfh">
+                                <select height="26" tabindex="0" class="css-3kuuxv">
+                                    <option value="自动驾驶">自动驾驶</option>
+                                    <option value="手动控制">手动控制</option>
+    
+                                </select>
+                                <div height="26" class="css-u3suiv"><svg width="100%" viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"></path>
+                                    </svg></div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="sendpoint">
+                        <div id="navtabs">
+                            <div class="tab active" id="SetGoalPoint">目标点</div>
+                            <div class="tab" id="SetMultiGoal">期望轨迹</div>
+                            <div class="tab" id="SetVelocity">期望速度</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>图像</h4>
+                        <div id="cameramsg"></div>
+                        <h4>点云</h4>
+                        <div id="lidarmsg"></div>
+                    </div>
+    
+    
+                </div>
+
+                <img src="image/movecar.png" id="movecar1" alt="" style="width: 50px; height: 100px; position:absolute;" onclick="movecar_click(1)">
+
+            </div>
+
+            <div id="showMap">
+                <!-- <canvas id="draw" >
+                   
+                </canvas> -->
+                <!-- onclick="mapprocess()" -->
+                <img src="image/map.png" id="mapare" alt="" 
+                style="position: relative;left: 200px;top: 0px;" onclick="mapprocess()">
+
+                <div id="circle">
+                </div>
+               
+               
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="js/echarts-5.3.3/dist/echarts.js"></script>
+    <!-- <script src="js/poschart.js"></script> -->
+    <script src="js/main.js"></script>
+
+
+    <script>
+        const container = document.getElementById("showMap");
+        const img = document.getElementById("mapare");
+        var widthW=100; // 初始化默认宽度
+        img.style.width = `${widthW}%`;  // 赋值默认宽度
+//         container.onmouseover = ()=> {  // 鼠标经过事件
+//         img.onmousewheel = (b)=> {  // 鼠标滚动事件
+//          console.log(b); // 打印 b ，可以看到鼠标滚动得很多信息
+//          b.wheelDelta < 0 ? widthW-- : widthW++;  // 其中 wheelDelta 对象的值就是判断滚轮往前滚还是往后滚：   <0 是往后滚， >0是前滚
+//          img.style.width = `${widthW}%`;
+//     }
+//   }
+
+
+            // var table = document.getElementById("customers");
+            // var rows = table.rows;//获取所有行
+            // console.log("lenth",rows.length) //
+            // for(var i=1; i < rows.length; i++){
+            //     var row = rows[i];//获取每一行
+            //     var id = row.cells[0].innerHTML;//获取具体单元格
+            //     var id1 = row.cells[1].innerHTML;//获取具体单元格
+
+            //     console.log("id",id)
+            //     console.log("id",id1)
+
+            // }
+
+
+    </script>
+
+</body>
+
+</html>

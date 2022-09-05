@@ -1,0 +1,827 @@
+body{
+    user-select: none;
+    background: #050505;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    font-weight: 200;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+#container {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    
+}
+#control-panel {
+    display: flex;
+    flex-direction: column;
+    background: #333;
+    color: #F8F8F9;
+    opacity: 0.9;
+}
+#control-panel {
+    position: fixed;
+    width: 348px;
+    height: calc(100vh - 150px);
+    border-bottom: solid 1px #d8acac;
+}
+
+
+#control-panel header {
+    padding: 12px;
+}
+
+#control-panel header, #control-panel footer {
+    flex: 0 0 auto;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: auto;
+    text-align: center;
+}
+
+header {
+    display: block;
+}
+
+#control-panel #logo {
+    text-align: left;
+    margin:18px 70px;
+}
+
+#control-panel #logo img {
+    width: 150px;
+}
+#control-panel header #tabs {
+    display: flex;
+    width: 100%;
+    height: 25px;
+}
+#control-panel  .item{
+    display: none;
+}
+
+
+#control-panel header .tab.active {
+    border-color: #000;
+    background: #404042;
+    color: #fff;
+}
+#control-panel header .tab {
+    flex-grow: 1;
+    background: #000;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -4px 0;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+#control-panel #carare {
+    flex: 1 1 auto;
+    padding: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#control-panel h4 {
+    text-transform: uppercase;
+    opacity: 0.4;
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+.css-1nssnj5 {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: initial;
+    pointer-events: all;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+}
+.css-8lbdfh {
+    position: relative;
+    width: 100%;
+    height: 26px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(133, 133, 134);
+}
+.css-3kuuxv {
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    line-height: 26px;
+    color: rgb(248, 248, 249);
+    appearance: none;
+    background: rgba(51, 51, 51, 0.9);
+    border: none;
+    outline: 0px;
+    padding-left: 8px;
+    padding-right: 24px;
+}
+.css-u3suiv {
+    pointer-events: none;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(133, 133, 134);
+    padding: 8px;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    line-height: 16px;
+}
+#control-panel #carare .caimage{
+    left: 0;
+    width: 324px;
+    height: 150px;
+    margin-top: 20px;
+    /* text-transform: uppercase; */
+
+    opacity: 0.3;
+    
+}
+#control-panel #carare .caimage .carol{
+    font-weight: 600;
+    font-size: 16px;
+    text-align:center;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+   
+}
+
+
+
+
+#hud {
+    position: fixed;
+    width: 348px;
+    height: 149px;
+    left: 0;
+    bottom: 0;
+}
+
+#hud {
+    display: flex;
+    background: #333;
+    opacity: 0.9;
+    box-sizing: border-box;
+    padding: 12px 8px;
+}
+
+#hud .hud-column {
+    width: 108px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.css-2lb4ch {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: initial;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+    padding: 8px;
+    display: inline-block;
+}
+#hud .autonomy-state {
+    font-size: 12px;
+    width: 92px;
+    text-align: center;
+    text-transform: capitalize;
+    padding: 4px 0;
+}
+
+.css-4phjkz {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: initial;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+    padding: 0px;
+    /* display: inline-block; */
+}
+style attribute {
+    line-height: 0;
+    text-align: center;
+}
+svg:not(:root) {
+    overflow: hidden;
+}
+.css-r5ec2e {
+    height: 16px;
+    margin: 4px;
+    fill: rgb(64, 64, 66);
+}
+:not(svg) {
+    transform-origin: 0px 0px;
+}
+
+.css-2lb4ch {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: initial;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+    padding: 8px;
+    display: inline-block;
+}
+.css-1w2kk23 {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(208, 208, 209);
+    padding-left: 1.1em; 
+
+}
+.css-xwl1qf {
+    text-align: center;
+    flex: 1 1 0%;
+    padding: 0px 4px 4px;
+     padding-left: 1.1em; 
+    font-size: 18px;
+    color: rgb(248, 248, 249);
+    line-height: 1em;
+    font-weight: 700;
+}
+.css-105jv7o {
+    font-size: 14px;
+    color: rgb(208, 208, 209);
+    line-height: 1em;
+}
+svg:not(:root) {
+    overflow: hidden;
+}
+.css-swgk1y {
+    stroke: rgb(64, 64, 66);
+}
+.css-1w2kk23 {
+    text-align: center;
+    font-size: 14px;
+    color: rgb(208, 208, 209);
+}
+.css-isy1iu {
+    text-align: center;
+    flex: 1 1 0%;
+    padding: 3px 4px 4px;
+    font-size: 18px;
+    color: rgb(248, 248, 249);
+    line-height: 1em;
+    font-weight: 700;
+}
+.css-105jv7o {
+    font-size: 14px;
+    color: rgb(208, 208, 209);
+    line-height: 1em;
+}
+.css-15glemy {
+    stroke: rgb(248, 248, 249);
+    stroke-width: 2;
+}
+:not(svg) {
+    transform-origin: 0px 0px;
+}
+
+.css-b48ukf {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: initial;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+    position: absolute;
+    box-sizing: content-box;
+    box-shadow: rgb(0 0 0 / 15%) 0px 2px 4px 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(34, 34, 34);
+    z-index: 9999;
+}
+.css-12vwkdv {
+    margin: 0px;
+    padding: 0px;
+    cursor: grab;
+}
+.css-19surrd {
+    overflow: hidden;
+    line-height: 0;
+    box-sizing: content-box;
+    position: relative;
+}
+.css-1g3evtt {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: grab;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding-top: 28px;
+}
+
+.resize-triggers, .resize-triggers > div, .contract-trigger:before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+.resize-triggers > div {
+    background: #eee;
+    overflow: auto;
+}
+.css-wwnvmo {
+    margin: 0px;
+    padding: 0px;
+    cursor: nwse-resize;
+}
+.css-11ztsw1 {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+}
+
+#car1cfg{
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    top: 166px;
+    width: 257px;
+    height: 205px;
+    background: rgb(96, 97, 97);
+}
+#car1cfg .cfstyle{
+    width: 215px;
+    height: 60px;
+    font-weight: 500;
+    line-height: 2em;
+    text-align: right; 
+    color: #eee;   
+}
+#car1cfg .carmsg{
+    flex-grow: 1;
+    background: rgb(89, 87, 87);
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: 8px 0;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+#car1cfg .carmsg1{
+    flex-grow: 1;
+    background:rgb(96, 97, 97);
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -9px 13px;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+
+
+#car2cfg{
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    top: 358px;
+    width: 257px;
+    height: 205px;
+    background: rgb(96, 97, 97);
+}
+#car2cfg .cfstyle{
+    width: 215px;
+    height: 60px;
+    font-weight: 500;
+    line-height: 2em;
+    text-align: right; 
+    color: #eee;   
+}
+#car2cfg .carmsg{
+    flex-grow: 1;
+    background: rgb(89, 87, 87);
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: 8px 0;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+#car2cfg .carmsg1{
+    flex-grow: 1;
+    background:rgb(96, 97, 97);
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -9px 13px;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+
+
+#car3cfg{
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    top: 550px;
+    width: 257px;
+    height: 205px;
+    background: rgb(96, 97, 97);
+}
+#car3cfg .cfstyle{
+    width: 215px;
+    height: 60px;
+    font-weight: 500;
+    line-height: 2em;
+    text-align: right; 
+    color: #eee;   
+}
+#car3cfg .carmsg{
+    flex-grow: 1;
+    background: rgb(89, 87, 87);
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: 8px 0;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+#car3cfg .carmsg1{
+    flex-grow: 1;
+    background:rgb(96, 97, 97);
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -9px 13px;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+
+
+
+#showare {
+    position: fixed;
+    left: 348px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    border-left: solid 1px rgb(6, 6, 6);
+    background: rgb(10, 10, 10);
+}
+
+/* 图表 */
+.carpos {
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: initial;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+    position: relative;
+}
+.postext{
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#poschart,#velocitychart,#accleratechart{
+    width: 342px;
+    height: 181px;
+    font-style: initial;
+    font-variant: initial;
+    font-stretch: initial;
+    cursor: pointer;
+    pointer-events: initial;
+    background: rgba(51, 51, 51, 0.9);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.5;
+    color: rgb(248, 248, 249);
+    text-align: start;
+}
+.css-vxcmzt {
+    display: inline-flex;
+}
+
+#carcontrol {
+    /* display: flex;  */
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999;
+
+    background: #333;
+    color: #F8F8F9;
+    opacity: 0.9;
+}
+
+#carcontrol {
+    top: 80px;
+    right: 0;
+    bottom: 80px;
+    position: absolute;
+    width: 300px;
+    /* height: 115vh; */
+    border-bottom: solid 1px #d8acac;
+}
+#cartitle{
+    height: 40px;
+    font-weight: bold;
+    text-align:center;
+    margin-top:10px;
+
+}
+#carcontrol h4 {
+    display: block;
+    margin-block-start: 0em;
+    margin-block-end: 0.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+#sendpoint{
+    height: 50px;
+    background: #333;
+    margin-top: 20px;
+}
+ #navtabs {
+    display: flex;
+    width: 100%;
+    height: 25px;
+}
+#carcontrol #sendpoint .tab.active {
+    border-color: #000;
+    background: #404042;
+    color: #fff;
+}
+#carcontrol #sendpoint .tab {
+    flex-grow: 1;
+    background: #000;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -4px 0;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+#cameramsg{
+    height: 300px;
+    background:#000;
+}
+#lidarmsg{
+    height: 300px;
+    background:#000;
+}
+#goalstyle{
+    height: 200px;
+}
+
+#goaltabs {
+    display: flex;
+    width: 100%;
+    height: 25px;
+}
+#carcontrol #sendpoint .tab.active {
+    border-color: #000;
+    background: #404042;
+    color: #fff;
+}
+#carcontrol #sendpoint .tab {
+    flex-grow: 1;
+    background: #000;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -4px 0;
+    color: #A5A5A6;
+    text-transform: capitalize;
+}
+#control-panel #goalstyle .tab.active {
+    border-color: #000;
+    background: #404042;
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+    width: 50px;
+
+}
+#control-panel #goalstyle .tab {
+    width: 142px;
+    flex-grow: 1;
+    background:#eee;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    border: solid 1px transparent;
+    padding: 12px;
+    margin: -4px 10px;
+    color: #A5A5A6;
+    text-transform: capitalize;
+    text-align: center;
+    margin-top: 10px;
+    
+}
+#goaltabs{
+    margin-top: 10px;
+}
+#Mulgoal{
+    height: 400px;
+}
+#customers{
+    width: 330px;
+    margin-left: 10px;
+}
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+#customers tr:nth-child(even){background-color:#404042;}
+  
+#customers tr:hover {background-color: #ddd;}
+  
+#customers th {
+    width: 5px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color:#404042;
+    color: white;
+  }
+
+  .pose_button{
+    margin-top:25px;
+  }
+
+  .pose_button .push_button{
+    /* display:block; */
+    margin-left: 70px;
+  }
+
+  .pose_button .push_button {
+    font-size: 14px;
+    color: #fff;
+    height: 44px;
+    padding: 0 15px;
+    background-color: #07c160;
+    border: 1px solid #07c160;
+    line-height: 1.2;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    outline: none;
+    position: relative;
+  }
+  .pose_button .push_button::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border: inherit;
+    border-color: #000;
+    border-radius: inherit;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    content: ' ';
+  }
+  .pose_button .push_button:active::before {
+    opacity: 0.1;
+  }
+
+  #showShapan {
+    position: fixed;
+    left: 348px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    border-left: solid 1px rgb(6, 6, 6);
+    background: rgb(10, 10, 10);
+}
+
+#showMap {
+    width: 1200px;
+    position: fixed;
+    left: 348px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    border-left: solid 1px rgb(6, 6, 6);
+    background: rgb(10, 10, 10);
+}
+
+#draw{
+    position: fixed;
+    left: 348px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    border-left: solid 1px rgb(6, 6, 6);
+    background: rgb(10, 10, 10);
+}
+
+/* #speed_sig{
+    transform:rotate(10deg);
+    transform-origin: 0px,0px;
+} */
+  
+
+#circle{
+    position: absolute;
+    left: 200px;
+    top: 220px;
+    width: 5px;
+    height: 3px;
+    border-radius: 150px;
+    margin:auto;
+    background-color: red;
+    border: solid 1px;
+}
