@@ -1,277 +1,55 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: Seven
+ * @Date: 2022-08-10 09:19:17
+ * @LastEditors: Seven
+ * @LastEditTime: 2022-09-06 16:34:58
+-->
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <style type="text/css">
-            .circle{
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                background: red;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="circle" id="circle"></div>
-    </body>
-    <script type="text/javascript">
- 
-function MouseGesture(opt){
-  opt = opt || {};
-  if(opt.wise){
-    //是否 获取顺时针角度,默认为逆时针角度
-    this._getDeg = this._clockWise;
-  }else{
-    this._getDeg = this._antiClockWise;
-  }
-  this.distance = opt.distance || 4; //最小有效距离
-  this.vaildOffsetDeg =opt.vaildOffsetDeg || 80; //有效的差值角度，大于这个值，相当于拖拽无效
- 
-  this.startPoint = null; //开始的点
-  this.options = {}; //其他参数  偏移角度 offsetDeg  ， 偏移比例 offsetRate
- 
-  this.cache = null; //缓存的数据
-}
- 
- 
-MouseGesture.prototype._clockWise = function (start,end) {
-//获取顺时针的角度
-  return 360 -  this._antiClockWise(start,end);
-}
- 
-MouseGesture.prototype._antiClockWise = function (start,end) {
-  //获取逆时针的旋转角度
-  var x1 = start.x;
-  var y1 = start.y;
-  var x2 = end.x;
-  var y2 = end.y;
-  var deg = 0;
-  if(x1 != x2){
-    var k = (y1-y2)/(x1-x2);
-    var a = Math.atan(k);
-    deg = a * 180 /Math.PI - 90;   //弧度转角度
-    deg = Math.abs(deg);
-    if( x1 >= x2){
-      deg = deg + 180;
-    }
-  }else{
-    if(y2 > y1){
-      deg = 0;
-    }else{
-      deg = 180;
-    }
-  }
-  return Math.floor(deg);
-}
- 
- 
-MouseGesture.prototype.transformDeg = function (deg) {
-  if(deg >= 360){
-    deg = deg - 360;
-  }
-  if(deg < 0  ){
-    deg = 360 + deg;
-  }
-  return deg
-}
- 
-/**
- * 计算可用的角度
- * @private
- */
-MouseGesture.prototype._invalidDeg  = function (deg,offsetDeg) {
-  var $this = this;
- 
-  var vaildOffsetDeg = $this.vaildOffsetDeg || 80;
- 
-  var start =  $this.transformDeg(offsetDeg - vaildOffsetDeg);
-  var end = $this.transformDeg(offsetDeg + vaildOffsetDeg);
- 
-  if(start >= 360 - 2*vaildOffsetDeg){
-    if(deg <= end){
-      if(offsetDeg <= end){
-        return deg - offsetDeg;
-      }else{
-        return deg - (360 - offsetDeg);
-      }
-    }
-    if( deg >= start){
-      if(offsetDeg > start){
-        return deg - offsetDeg;
-      }else{
-        return (360 - deg) + offsetDeg;
-      }
-    }
-  }else{
-    if(deg <= end && deg >= start){
-      return offsetDeg - deg;
-    }
-  }
-  return false;
-}
- 
- 
- 
-/**
- * 对外的api，设置起始点
- * @param start
- * @param options
- */
-MouseGesture.prototype.setStart = function (start,options,cache) {
-  options = options || {};
-  this.startPoint = start; //开始的点
-  this.options =  options; //其他参数,偏移角度 offsetDeg  ， 偏移比例 offsetRate
- 
-  this.distance = options.distance || 4; //最小有效距离
-  this.vaildOffsetDeg = options.vaildOffsetDeg || 80; //有效的差值角度
- 
- 
-  this.cache = cache || null;
-}
- 
-/**
- * 结束之后，清空设置
- */
-MouseGesture.prototype.setEnd = function (opt) {
-  opt = opt || {};
-  this.distance = opt.distance || 4; //最小有效距离
-  this.vaildOffsetDeg =opt.vaildOffsetDeg || 80; //有效的差值角度，大于这个值，相当于拖拽无效
- 
-  this.startPoint = null; //开始的点
-  this.options = {}; //其他参数
-  this.cache = null;
-}
- 
-/**
- * 获取角度相关信息
- * @param end
- */
-MouseGesture.prototype.getDegInfo = function (end) {
-  if(this.startPoint && end){
-    var obj = {};
-    var start = {
-      x:this.startPoint.x,
-      y:this.startPoint.y
-    }
-    var dis = Math.sqrt((start.x - end.x) * (start.x - end.x) + (start.y - end.y)*(start.y - end.y));
- 
-    obj["distance"] = dis;
-    if(dis >= this.distance){
-      var deg = this._getDeg(start,end);
-      obj["deg"] = this.transformDeg(deg);
-      obj["missX"] = end.x - start.x;
-      obj["missY"] = end.y - start.y;
-      return obj;
-    }else{
-      return false;
-    }
-  }else{
-    return false;
-  }
-}
- 
-/**
- *  计算偏移量
- */
-MouseGesture.prototype.calcOffset  = function (end) {
-  var $this = this;
-  var obj = $this.getDegInfo(end);
-  if(obj){
-    var offsetDeg = $this.options.offsetDeg || 0;
-    offsetDeg = $this.transformDeg(offsetDeg);
-    var missDeg1  =  $this._invalidDeg(obj.deg,offsetDeg); //偏移角度,正面
-    var missDeg2  =  $this._invalidDeg($this.transformDeg(obj.deg + 180),offsetDeg); //偏移角度，反面
-    var missDeg =  false;
-    var digital = 1;
-    if(missDeg2 !== false){
-      missDeg = missDeg2;
-      digital = -1;
-    }
- 
-    if(missDeg1 !== false){
-      missDeg = missDeg1;
-      digital = 1;
-    }
- 
-    if(missDeg !== false){
-      //有效的拖拽角度
-      //计算偏移比例
-      missDeg = $this.degToRadian(missDeg);
- 
-       var dist = digital * obj.distance * Math.cos(missDeg);
-       var offsetRate =  $this.options.offsetRate || 1;  //如果是边，偏移比例应该是  1 ，如果是拐角，偏移比例应该是 Math.sqrt(2)/2
-      //console.log(missDeg1,missDeg2,obj.deg,offsetDeg,dist,digital);
-      return dist * offsetRate;
-    }
-  }
-  return false;
- 
-}
- 
- 
-MouseGesture.prototype.calcOffsetInfo = function (end) {
-  var dis = this.calcOffset(end)
-  if(dis !== false){
-      var obj = {
-        distance:dis
-      }
-      if(this.cache){
-        obj["cache"] = this.cache;
-      }
-      return obj;
-    }
-    return false;
-}
- 
-//角度转弧度
-MouseGesture.prototype.degToRadian = function (deg) {
-  return deg * Math.PI/180;
-}
- 
-//弧度转角度
-MouseGesture.prototype.RadianToDeg = function (radian) {
-  return radian * 180/Math.PI;
-}
- 
- 
- 
-//开始使用
- 
-var circle = document.getElementById("circle");
- 
-var ins =  new MouseGesture({wise:true});
- 
-window.addEventListener("mousedown",function(e){
-    ins.setStart({
-        x:e.clientX,
-        y:e.clientY
-    });
-    circle.style.left  = e.clientX - 5 + "px";
-    circle.style.top  = e.clientY - 5 + "px";
-})
-window.addEventListener("mousemove",function(e){
-    if(!ins.startPoint){
-        return ;
-    }
-    var obj = ins.getDegInfo({
-        x:e.clientX,
-        y:e.clientY
-    });
-    if(obj){
-        console.log(`角度为:${obj.deg};  x方向位移:${obj.missX};  y方向位移:${obj.missY} ;两点之间的距离为:${obj.distance}`); 
-    }else{
-        console.log("无效的移动");
-    }
-})
-window.addEventListener("mouseup",function(e){
-    ins.setEnd();
-})
-         
-         
-         
- 
- 
-    </script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+
+</head>
+<body>
+    <svg width="300" height="200">
+    </svg>
+</body>
+
+<script>
+
+    // 获取 svg
+    var svg = d3.select('svg');
+
+    //箭头
+    var marker =
+        svg.append("marker")
+            .attr("id", "arrow")
+            .attr("markerUnits","strokeWidth")//设置为strokeWidth箭头会随着线的粗细发生变化
+            .attr("viewBox", "0 0 12 12")//坐标系的区域
+            .attr("refX", 6)//箭头坐标
+            .attr("refY", 6)
+            .attr("markerWidth", 12)
+            .attr("markerHeight", 12)
+            .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+            .append("path")
+            .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")//箭头的路径
+            .attr('fill', '#f00');//箭头颜色
+
+    // 绘制直线
+    var line = svg.append("line")
+        .attr("x1",50)
+        .attr("y1",10)
+        .attr("x2",200)
+        .attr("y2",50)
+        .attr("stroke","red")
+        .attr("stroke-width",2)
+        .attr("marker-end","url(#arrow)")
+
+
+</script>
+
 </html>

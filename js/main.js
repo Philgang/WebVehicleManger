@@ -1,4 +1,7 @@
-  
+  //车辆数量
+  var AllCarNum = 5;
+
+  var Goalsendsign = false;
   // 全局变量
   var ClickSign=0;
 
@@ -6,6 +9,10 @@
   var ca1_lidar_viewer;
   var Car1Posx ;
   var Car1Posy ;
+  var CarOrx;
+  var CarOry;
+  var CarOrz;
+  var CarOrw;
   var Car1Speed ;
   var Car_timer=null;
   var anuspeed;
@@ -28,6 +35,8 @@
 
 
 
+  var ModeSign=0; 
+
   var MessIndex=document.getElementById("MessIndex");
   var ShaPanIndex=document.getElementById("ShaPanIndex");
   var carmap=document.getElementById("carmap");
@@ -39,9 +48,9 @@
 
 
   var speed_sig = document.getElementById("speed_sig");
-  speed_sig.transform.animVal[1].angle=10;
+  // speed_sig.transform.animVal[1].setRotate(0,10,0);
     
-  console.log( speed_sig.transform.animVal[1]);
+  // console.log( speed_sig.transform.animVal[1]);
   
   var car1 = document.getElementById("movecar1");
   car1.style.display="none";
@@ -62,11 +71,32 @@
   var showMap = document.getElementById("showMap");
   showMap.style.display="none"
 
+  var ShaPanStatus = document.getElementById("ShaPanStatus");
+  ShaPanStatus.style.display = "none";
+
+
+  var car_index = 0;
 
 
   TabChange("#tabs",0)
   TabChange("#navtabs",1)
 
+
+/**
+ * @description: 车辆图片点击，配置界面响应函数
+ * @return {*}
+ * @author: Phil
+ */
+
+
+function car1click(id){
+    var carcfglis = document.querySelectorAll('.cfg');
+    // console.log(carcfglis);
+    if(car_index==id){
+      carcfglis[id-1].style.display = "block";
+      console.log(carcfglis[id]);
+    }
+  }
 
  
 /**
@@ -74,73 +104,54 @@
  * @return {*}
  * @author: Phil
  */
+
+
 function numChange(){
-
-    
-    var car_num=document.getElementById("car_num");
-    var car_index=car_num.selectedIndex ; 
-    console.log(car_index);
-    if(car_index==1){
-    document.getElementById("carid1").style.opacity=1;
-    document.getElementById("carid2").style.opacity=0.3;
-    document.getElementById("carid3").style.opacity=0.3;
-
-
-
     var caid1 = document.getElementById("carid1");
-    caid1.onclick = function () {
-        car1cfg.style.display = "";
-        console.log(car1cfg.style.display);
-
-    }
-    }
-    else if(car_index==2){
-        document.getElementById("carid1").style.opacity=1;
-        document.getElementById("carid2").style.opacity=1;
-        document.getElementById("carid3").style.opacity=0.3;
-
-        var caid1 = document.getElementById("carid1");
-        caid1.onclick = function () {
-        car1cfg.style.display = "";
-
-    }
-
-       var caid2 = document.getElementById("carid2");
-        caid2.onclick = function () {
-        car2cfg.style.display = "";
-    }
-
-
-
-
-    }
-    else if(car_index==3){
-        document.getElementById("carid1").style.opacity=1;
-        document.getElementById("carid2").style.opacity=1;
-        document.getElementById("carid3").style.opacity=1;
-
-        var caid1 = document.getElementById("carid1");
-        caid1.onclick = function () {
-        car1cfg.style.display = "";
-    }
-
-       var caid2 = document.getElementById("carid2");
-        caid2.onclick = function () {
-        car2cfg.style.display = "";
-    }
-
+    var caid2 = document.getElementById("carid2");
     var caid3 = document.getElementById("carid3");
-    caid3.onclick = function () {
-    car3cfg.style.display = "";
-}
+
+    var car_num=document.getElementById("car_num");
+    car_index=car_num.selectedIndex ; 
+    console.log(car_index);
+
+    for(var i=1;i<=car_index;i++){
+      var carname = "carid"+i;
+      document.getElementById(carname).style.opacity=1;
+    }
+
+    for(var i=1;i<=AllCarNum-car_index;i++){
+      var carname = "carid"+(car_index+i);
+      document.getElementById(carname).style.opacity=0.3;
+    }
 
 
-    }
-    else{
-        document.getElementById("carid1").style.opacity=0.3;
-        document.getElementById("carid2").style.opacity=0.3;
-        document.getElementById("carid3").style.opacity=0.3;
-    }
+
+  //   if(car_index==0){
+  //     document.getElementById("carid1").style.opacity=0.3;
+  //     document.getElementById("carid2").style.opacity=0.3;
+  //     document.getElementById("carid3").style.opacity=0.3;
+     
+  // }
+  //   else if(car_index==1){
+  //   document.getElementById("carid1").style.opacity=1;
+  //   document.getElementById("carid2").style.opacity=0.3;
+  //   document.getElementById("carid3").style.opacity=0.3;
+
+  //   }
+
+
+  //   else if(car_index==2){
+  //       document.getElementById("carid1").style.opacity=1;
+  //       document.getElementById("carid2").style.opacity=1;
+  //       document.getElementById("carid3").style.opacity=0.3;
+  //   }
+  //   else if(car_index==3){
+  //       document.getElementById("carid1").style.opacity=1;
+  //       document.getElementById("carid2").style.opacity=1;
+  //       document.getElementById("carid3").style.opacity=1;
+  //   }
+
 
     
 }
@@ -171,6 +182,9 @@ function numChange(){
    */  
   function Carcfg_click(index){
     if (index==1) {
+
+        ShaPanStatus.style.display = "";
+
       
         var car1ip = document.getElementById("car1ip").value;
         var car1port = document.getElementById("car1port").value;
@@ -181,7 +195,7 @@ function numChange(){
 
         ca1_lidar_viewer = new ROS3D.Viewer({
           divID : 'lidarmsg',
-          width : 300,
+          width : 400,
           height : 300,
           antialias : true
         });
@@ -201,6 +215,9 @@ function numChange(){
         alert("connect success");
         });
 
+
+
+
         car1_ros.on('error', function(error) {
           console.log('Error connecting to websocket server: ', error);
           document.getElementById("car1cam").src ="image/f.png";
@@ -208,6 +225,11 @@ function numChange(){
          document.getElementById("car1cmd").src ="image/f.png";
           alert("Connect error,check the ip and port or host!!");
         });
+
+
+        image_show(car1_ros,car1ip);
+        lidarshow(car1_ros,ca1_lidar_viewer);
+
 
         var pose_listener = new ROSLIB.Topic({
           ros : car1_ros,
@@ -234,14 +256,20 @@ function numChange(){
           // console.log("x:",Car1Posx);
           // console.log("y:",Car1Posy);
 
-          var movex = (Car1Posx+13.8)/0.02;
-          var movey = 1083-(Car1Posy+12.2)/0.02;
+          var movex = (Car1Posx+3.5)/0.0067;
+          var movey = 888-(Car1Posy+3)/0.0067;
+          var moveyaw = Ori2yaw( message.pose.pose.orientation.x,message.pose.pose.orientation.y,
+                              message.pose.pose.orientation.z,message.pose.pose.orientation.w);
+          console.log("angle:",moveyaw);
+
+
           car1 = document.getElementById("movecar1");
           // console.log("x:",parseInt(movex));
           // console.log("y:",parseInt(movey));
 
           car1.style.left = parseInt(movex)+'px';
           car1.style.top = parseInt(movey)+'px';
+          car1.style.transform ='rotate(' + moveyaw + 'deg)';
 
 
         //   if(GoalSign==true){
@@ -288,6 +316,8 @@ function numChange(){
 
             });
 
+    
+
 
 
 
@@ -318,14 +348,14 @@ function numChange(){
     if (move_num==1){
         carcontrol.style.display = "";
         clearInterval(Car_timer);
-        Car_timer = setInterval(SetCarPos,100);
+        Car_timer = setInterval(SetCarPos,1);
         setInterval(DranLine,100);
         carare.style.display="none";
         Messcarare.style.display="block";
         carmap.className = "tab ";
         ShaPanIndex.className = "tab active";
         MessIndex.className = "tab";
-       // mapprocess();
+       //mapprocess();
         //SetGoalPoint.onclick= function(){ mapprocess("single");}
        
 
@@ -347,8 +377,7 @@ function numChange(){
   }
 
 
-// image_show(car1_ros);
-// lidarshow(car1_ros,ca1_lidar_viewer);
+
  
 
 function TabChange(id,sig){
@@ -430,9 +459,123 @@ function bbimg() {
 
 }
 
+var Vx=0;
+var Vy=0;
+var Az=0;
+
+function ControlProcess(){
+  var ControlMode=document.getElementById("ControlMode");
+  var ControlMode_index=ControlMode.selectedIndex ;
+
+  var Controlindex = document.getElementById("Controlindex");
+  if(ControlMode_index==0){Controlindex.innerHTML = "Autonomous";}
+  else{Controlindex.innerHTML = " Manual";}
+
+
+
+  console.log("left key");
+
+  document.onkeydown = keyDown;
+ //在Document对象中注册keyDown事件处理函数
+ function keyDown(event){ 
+
+  if(ControlMode_index==0){
+    console.log("index",ControlMode_index);
+    Controlindex.innerHTML = "Autonomous";
+
+
+    ModeSign=0;
+  }
+  if(ControlMode_index==1){
+    console.log("index",ControlMode_index);
+    Controlindex.innerHTML = " Manual";
+
+
+
+
+    ModeSign=1;
+  // 方向键控制元素移动函数
+     var event = event || window.event;  // 标准化事件对象
+     switch(event.keyCode){  // 获取当前按下键盘键的编码
+         case 37 :  // 按下左箭头键，向左移动5个像素
+             console.log("left move");
+             if(Az<0){Az=0.1;}
+             else{Az=Az+0.1}
+             break;
+         case 39 :  // 按下右箭头键，向右移动5个像素
+             console.log("right move");
+             if(Az>0){Az=-0.1;}
+             else{Az=Az-0.1}
+             break;
+         case 38 :  // 按下上箭头键，向上移动5个像素
+             console.log("up move");
+             if(Vx<0){Vx=0.1;}
+             else{Vx=Vx+0.1}
+             break;
+         case 40 :  // 按下下箭头键，向下移动5个像素
+             console.log("down move");
+             if(Vx>0){Vx=-0.1;}
+             else{Vx=Vx-0.1}
+             break;
+         case 32 :  // 按下下箭头键，向下移动5个像素
+             console.log("down move");
+             Vx=0;
+             Az=0;
+             break;
+     }
+
+
+     var cmd = new ROSLIB.Topic({
+      ros : car1_ros,
+      name : '/cmd_vel',
+      messageType : 'geometry_msgs/Twist'
+      });//创建一个topic,它的名字是'/cmd_vel',,消息类型是'geometry_msgs/Twist'
+      var velocity = new ROSLIB.Message({
+     
+        linear:{
+          x : Vx,
+          y : 0,
+          z : 0,
+        },
+        angular:{
+          x : 0,
+          y : 0,
+          z : Az,
+
+        }
+
+      });
+      cmd.publish(velocity);
+
+
+
+
+
+
+    }
+
+
+ }
+
+
+
+  // if(ControlMode_index==0){
+  //   ModeSign=0;
+  // }
+  // else{
+   
+
+
+  // }
+
+
+}
+
+
+var status_listener;
 
 function mapprocess(){
-   var SetGoalPoint = document.getElementById("SetGoalPoint");
+    var SetGoalPoint = document.getElementById("SetGoalPoint");
     var SetMultiGoal = document.getElementById("SetMultiGoal");
     var SetVelocity = document.getElementById("SetVelocity");
 
@@ -446,11 +589,18 @@ function mapprocess(){
    var scw = 512/w;
    var sch =  480/h;
 
+
+
+
    if(carcontrol.style.display==""& SetGoalPoint.className=="tab active"){
 
-    circle.style.left = event.offsetX+200+"px";
-    circle.style.top = event.offsetY+"px";
 
+
+    var pointDiv = document.createElement("div");
+    pointDiv.id = "circle";
+    pointDiv.style.left = event.offsetX+200+"px";
+    pointDiv.style.top = event.offsetY+"px";
+    showMap.insertBefore(pointDiv, showMap.lastChild);
 
 
     alert('x:' + (event.offsetX*scw).toFixed(0) + "  y:" +  (event.offsetY*sch).toFixed(0));
@@ -463,6 +613,7 @@ function mapprocess(){
     car_posx.innerHTML = wx.toFixed(2);
     car_posy.innerHTML = wy.toFixed(2);
     car_posyaw.innerHTML = 90.01;
+    
 
 
     var Posebutton2 = document.getElementById("Posebutton2");
@@ -509,10 +660,19 @@ function mapprocess(){
 
     }
 
-    if(carcontrol.style.display==""& SetMultiGoal.className=="tab active"){
+  if(carcontrol.style.display==""& SetMultiGoal.className=="tab active"){
       console.log("in goal");
       var wx=event.offsetX*scw*0.05-13.8;
       var wy=(480-event.offsetY*sch)*0.05-12.2;
+
+      var msgDiv = document.createElement("div");
+      msgDiv.id = "Mulcircle";
+      msgDiv.style.left = event.offsetX+200+"px";
+      msgDiv.style.top = event.offsetY+"px";
+      showMap.insertBefore(msgDiv, showMap.lastChild);
+
+    
+
       var goalp =[wx.toFixed(2),wy.toFixed(2)];
       GoalList.push(goalp);
       //alert(GoalList);
@@ -533,8 +693,13 @@ function mapprocess(){
       }
 
       var MulGoalButton = document.getElementById("MulGoalButton");
+      console.log("listout",GoalList);
+
       MulGoalButton.onclick = function() {
-        var status_listener = new ROSLIB.Topic({
+
+        Goalsendsign = true;
+
+          status_listener = new ROSLIB.Topic({
           ros : car1_ros,
           name : '/move_base/status',
           messageType : 'actionlib_msgs/GoalStatusArray'
@@ -542,17 +707,26 @@ function mapprocess(){
 
           status_listener.subscribe(function(statuses) {
 
+
+            if(Goalsendsign){
+        
+            console.log("listin",GoalList);
+
           var arrive_pre = GoalSign;
           GoalSign = CheckGoal(statuses.status_list)
-          if (GoalSign & arrive_pre!=GoalSign){
+          console.log("GoalSign:",GoalSign);
+          // console.log(GoalSign &(GoalSign!=arrive_pre));
+
+          if (GoalSign){
+
             if(curGoalIdx_<GoalList.length){
             
               var x1 = (GoalList[curGoalIdx_][0]);
               var y1 = (GoalList[curGoalIdx_][1]);
-              console.log("goal x",typeof x1);
-              console.log("goal y",typeof y1);
-              console.log("GoalList.length",GoalList.length);
-              console.log("curGoalIdx_",curGoalIdx_);
+              console.log("goal sucessful");
+              // console.log("goal y",typeof y1);
+              // console.log("GoalList.length",GoalList.length);
+              // console.log("curGoalIdx_",curGoalIdx_);
 
 
 
@@ -572,7 +746,7 @@ function mapprocess(){
                 position:{
                   x :parseFloat(x1),//GoalList[2*curGoalIdx_],
                   y :parseFloat(y1),
-                  z : 0.3
+                  z : 0.0
                 },
                 orientation:{
                   x : 0,
@@ -591,7 +765,7 @@ function mapprocess(){
             }
 
           }
-         
+        }
           
 
             });
@@ -673,7 +847,7 @@ function CheckGoal(status_list){
         console.log("Please input the Navi Goal");
     done = false;
 }
-console.log("done",done)
+// console.log("done",done)
 
 return done;
 
@@ -681,16 +855,22 @@ return done;
 
 
 
-function image_show(rosnum) {
-    // Create the main viewer.
-    var viewer = new MJPEGCANVAS.Viewer({
-      divID : 'cameramsg',
-      host : 'localhost',
-      width : 300,
-      height : 300,
-      topic : '/ares1/camera/image_raw',
-    //   interval : 200
-    });
+function image_show(rosnum,car1ip) {
+  var imageLink =document.getElementById('imageLink');
+  imageLink.src ="http://"+car1ip+":8080/stream?topic=/ares1/camera/image_raw";
+  //http://192.168.99.130:8080/stream?topic=/camera/color/image_raw /ares1/camera/image_raw /camera/color/image_raw
+
+     imageLink
+    // // Create the main viewer.
+    // var viewer = new MJPEGCANVAS.Viewer({
+    //   divID : 'cameramsg',
+    //   host : 'localhost',
+    //   width : 300,
+    //   height : 300,
+    //   topic : "/camera/color/image_raw",
+    //   //'/ares1/camera/image_raw',
+    // //   interval : 200
+    // });
   }
 
 
@@ -934,4 +1114,116 @@ function image_show(rosnum) {
   function clikenvent(){
     ClickSign=1;
   }
+
+  function ClearGoal(){
+    var my=document.getElementById("circle")
+    my.parentNode.removeChild(my)
+    var car_posx = document.getElementById("car_posx");
+    var car_posy = document.getElementById("car_posy");
+    var car_posyaw = document.getElementById("car_posyaw");
+
+    car_posx.innerHTML = "";
+    car_posy.innerHTML = "";
+    car_posyaw.innerHTML = "";
+
+  }
+
+  function ClearMultiGoal(){
+    Goalsendsign=false;
+    arrive_pre = false;
+    var table = document.getElementById("customers");
+    var rows = table.rows;//获取所有行
+
+
+
+
+    for(var i=1; i <GoalList.length+1; i++){
+        var my=document.getElementById("Mulcircle")
+        my.parentNode.removeChild(my)
+        var row = rows[i];//获取每一行
+        row.cells[1].innerHTML="";//获取具体单元格
+        row.cells[2].innerHTML="";//获取具体单元格
+
+        // console.log("id",id)
+        // console.log("id",id1)
+
+    }
+    GoalList=[];
+    curGoalIdx_ =0;
+
+  }
+
+
+
+function Senddata(){
+
+    var ws = new WebSocket("ws://127.0.0.1:8080"); 
+    ws.onopen = function(){
+    console.log("open");
+    const json = JSON.stringify({
+      weather: 'keepalive',
+      vehicle_list: [
+          {"vehicle_id":1,"pose_x":13,"pose_y":3,"velocity":210,"heading":610},
+          {"vehicle_id":2,"pose_x":1,"pose_y":3,"velocity":20,"heading":60},
+  ],
+      Light_list: [
+          {"Light_id":1,"Light_pose_x":12,"Light_pose_y":3,"Light_status":30},
+          {"Light_id":2,"Light_pose_x":1,"Light_pose_y":3,"Light_status":20},
+  ]
+  });
+    ws.send(json);
+}
+
+    ws.onmessage = function(e){
+    console.log(e.data);
+}
+
+//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+    ws.onclose = function(e){
+    console.log("close");
+}
+
+//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+     ws.onerror = function(e){
+    console.log(error);
+}
+
+
+}
+
+//setInterval(Senddata,1000);
  
+function Ori2yaw(x,y,z,w){
+
+    var siny_cosp = 2.0 * (w * z + x * y);
+    var cosy_cosp = 1.0 - 2.0 * (y * y + z * z);
+    var yaw =Math.atan2(siny_cosp, cosy_cosp);
+    angles = -(yaw/3.1415926*180.0)+90;
+
+    // console.log("siny_cosp:",siny_cosp);
+    // console.log("cosy_cosp:",cosy_cosp);
+    // console.log("yaw:",yaw);
+
+
+ 
+    return angles
+
+
+}
+
+function Yaw2ori(yaw,pitch,roll){
+  var ori = new Array();
+  var cy = cos(yaw * 0.5);
+  var sy = sin(yaw * 0.5);
+  var cp = cos(pitch * 0.5);
+  var sp = sin(pitch * 0.5);
+  var cr = cos(roll * 0.5);
+  var sr = sin(roll * 0.5);
+
+  ori[0] = cy * cp * cr + sy * sp * sr;
+  ori[1] = cy * cp * sr - sy * sp * cr;
+  ori[2] = sy * cp * sr + cy * sp * cr;
+  ori[3] = sy * cp * cr - cy * sp * sr;
+
+  return ori;
+}

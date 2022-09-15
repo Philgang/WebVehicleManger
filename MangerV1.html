@@ -22,15 +22,6 @@
     <script src="js/nav2djs/src/navigator/OccupancyGridClientNav.js"></script>
 
 
-
-
-
-
-
-
-
-
-
 </head>
 
 <body>
@@ -42,7 +33,7 @@
                     <div id="tabs">
                         <div class="tab active" id="MessIndex">信息</div>
                         <div class="tab" id="ShaPanIndex">沙盘</div>
-                        <div class="tab" id="carmap" onclick="mapprocess()">地图</div>
+                        <div class="tab" id="carmap">地图</div>
                     </div>
                 </header>
                 <div class="item" style="display: block;" id="carare">
@@ -55,6 +46,9 @@
                                     <option value="1辆">1辆</option>
                                     <option value="2辆">2辆</option>
                                     <option value="3辆">3辆</option>
+                                    <option value="4辆">4辆</option>
+                                    <option value="5辆">5辆</option>
+
                                 </select>
                                 <div height="26" class="css-u3suiv"><svg width="100%" viewBox="0 0 24 24">
                                         <path d="M7 10l5 5 5-5z"></path>
@@ -63,14 +57,20 @@
                         </div>
                     </div>
 
-                    <div class="caimage" id="carid1"><img src="image/cars.jpg" alt="" style="width: 200px;margin: 0px 52px;">
+                    <div class="caimage" id="carid1"><img src="image/cars.jpg" alt="" onclick="car1click(1)" style="width: 200px;margin: 0px 52px;">
                         <p class="carol">车辆1</p>
                     </div>
-                    <div class="caimage" id="carid2"><img src="image/cars.jpg" alt="" style="width: 200px;margin: 0px 52px;">
+                    <div class="caimage" id="carid2"><img src="image/cars.jpg" alt="" onclick="car1click(2)" style="width: 200px;margin: 0px 52px;">
                         <p class="carol">车辆2</p>
                     </div>
-                    <div class="caimage" id="carid3"><img src="image/cars.jpg" alt="" style="width: 200px;margin: 0px 52px;">
+                    <div class="caimage" id="carid3"><img src="image/cars.jpg" alt="" onclick="car1click(3)" style="width: 200px;margin: 0px 52px;">
                         <p class="carol">车辆3</p>
+                    </div>
+                    <div class="caimage" id="carid4"><img src="image/cars.jpg" alt="" onclick="car1click(4)" style="width: 200px;margin: 0px 52px;">
+                        <p class="carol">车辆4</p>
+                    </div>
+                    <div class="caimage" id="carid5"><img src="image/cars.jpg" alt="" onclick="car1click(5)" style="width: 200px;margin: 0px 52px;">
+                        <p class="carol">车辆5</p>
                     </div>
 
                 </div>
@@ -120,7 +120,7 @@
                             <input type="text" name="usrname" class="tab" style="width: 142px;">
                         </div>
                         <div class="pose_button">
-                            <butto type="button" class="push_button" id="Posbutton">清除</butto>
+                            <butto type="button" class="push_button" id="ClearPosbutton" onclick="ClearGoal()">清除</butto>
                             <butto type="button" class="push_button" id="Posebutton2">确定</butto>
                         </div>
 
@@ -167,9 +167,29 @@
                                 <td></td>
                                 <td></td>
                             </tr>
+                            <tr>
+                                <th>7</th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>8</th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>9</th>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>10</th>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </table>
                         <div class="pose_button">
-                            <butto type="button" class="push_button">清除</butto>
+                            <butto type="button" class="push_button" id="ClearMultiGoal" onclick="ClearMultiGoal()">清除</butto>
                             <butto type="button" class="push_button" id="MulGoalButton">确定</butto>
                         </div>
                     </div>
@@ -179,7 +199,7 @@
             <div id="hud">
                 <div class="hub-column">
                     <div class="css-2lb4ch">
-                        <div class="autonomy-state" style="background: rgb(71, 178, 117);">autonomous</div>
+                        <div class="autonomy-state" style="background: rgb(71, 178, 117);" id="ontrolindex">autonomous</div>
                     </div>
                     <div class="css-4phjkz">
                         <div style="line-height: 0; text-align: center;">
@@ -263,7 +283,7 @@
             <div id="showShapan">
 
 
-                <div id="car1cfg">
+                <div id="car1cfg" class="cfg">
                     <div style="height: 30px;background: #333;text-align: center;color: aliceblue;font-weight:500;">配置1
                         <input type="image" src="image/Untitled1.png" height="30" style="float: right;" name="close" onclick="Closecfg1(1)" />
                     </div>
@@ -285,7 +305,7 @@
                     <div class="carmsg1"><img src="image/f.png" id="car1lidar" alt="" style="width: 30px;height: 30px;"></div>
                     <div class="carmsg1"><img src="image/f.png" id="car1cmd" alt="" style="width: 30px;height: 30px;"></div>
                 </div>
-                <div id="car2cfg">
+                <div id="car2cfg" class="cfg">
                     <div style="height: 30px;background: #333;text-align: center;color: aliceblue;font-weight:500;">配置2
                         <input type="image" src="image/Untitled1.png" height="30" style="float: right;" name="close" onclick="Closecfg1(2)" />
                     </div>
@@ -306,7 +326,7 @@
                     <div class="carmsg1"><img src="image/f.png" id="car2lidar" alt="" style="width: 30px;height: 30px;"></div>
                     <div class="carmsg1"><img src="image/f.png" id="car2cmd" alt="" style="width: 30px;height: 30px;"></div>
                 </div>
-                <div id="car3cfg">
+                <div id="car3cfg" class="cfg">
                     <div style="height: 30px;background: #333;text-align: center;color: aliceblue;font-weight:500;">配置3
                         <input type="image" src="image/Untitled1.png" height="30" style="float: right;" name="close" onclick="Closecfg1(3)" />
                     </div>
@@ -328,13 +348,31 @@
                     <div class="carmsg1"><img src="image/f.png" id="car3cmd" alt="" style="width: 30px;height: 30px;"></div>
                 </div>
 
+                <div id="ShaPanStatus">
+                    <div style="height: 40px;font-weight: bold;text-align: center;margin-top: 10px;color: #F8F8F9;margin-bottom: -15px">沙盘状态信息</div>
+                   <div>
+                        <div class="carmsg">天气</div>
+                        <div class="carmsg">虚拟沙盘</div>
+                        <div class="carmsg">车辆</div>
+                   </div>
+
+                   <div>
+                        <div class="carmsg1"><img src="image/weather1.png" id="car1cam" alt="" style="width: 40px;height: 40px;"></div>
+                        <div class="carmsg1"><img src="image/f.png" id="car1lidar" alt="" style="width: 40px;height: 40px;"></div>
+                        <div class="carmsg1"><img src="image/r.png" id="car1cmd" alt="" style="width: 40px;height: 40px;"></div>
+                   </div>
+                   
+
+                   
+                </div>
+
                 <div id="carcontrol">
                     <div id="cartitle">车辆控制</div>
                     <!-- <h4 class="cartext">控制方式</h4> -->
                     <div>
                         <div class=" css-1nssnj5" height="26">
                             <div height="26" class="css-8lbdfh">
-                                <select height="26" tabindex="0" class="css-3kuuxv">
+                                <select height="26" tabindex="0" class="css-3kuuxv" id="ControlMode" onchange="ControlProcess()">
                                     <option value="自动驾驶">自动驾驶</option>
                                     <option value="手动控制">手动控制</option>
     
@@ -355,7 +393,9 @@
                     </div>
                     <div>
                         <h4>图像</h4>
-                        <div id="cameramsg"></div>
+                        <div id="cameramsg">        
+                            <img id="imageLink" src="" style="height: 300px;width: 400px;">
+                        </div>
                         <h4>点云</h4>
                         <div id="lidarmsg"></div>
                     </div>
@@ -363,7 +403,11 @@
 
                 </div>
 
-                <img src="image/movecar.png" id="movecar1" alt="" style="width: 50px; height: 100px; position:absolute;" onclick="movecar_click(1)">
+                <div style="background-image: url(image/carmap.png); width: 1045px; height: 888px; margin-top: 43px;">
+                    <img src="image/movecar.png" id="movecar1" alt="" style="width: 25px; height: 50px; position:absolute; transform-origin: 50% 50%;" onclick="movecar_click(1)">
+
+                </div>
+
 
             </div>
 
@@ -372,9 +416,7 @@
                    
                 </canvas> -->
                 <!-- onclick="mapprocess()" -->
-                <img src="image/map.png" id="mapare" alt="" style="position: relative;left: 200px;top: 0px;" onclick="mapprocess()">
-
-                <div id="circle">
+                <img src="image/map.png" id="mapare" alt="" style="position: relative;left: 100px;top: 0px;" onclick="mapprocess()">
                 </div>
 
 
@@ -386,6 +428,7 @@
     </div>
 
     <script src="js/echarts-5.3.3/dist/echarts.js"></script>
+    <script src="js/three.js-dev/build/three.js"></script>
     <!-- <script src="js/poschart.js"></script> -->
     <script src="js/main.js"></script>
 
@@ -393,7 +436,7 @@
     <script>
         const container = document.getElementById("showMap");
         const img = document.getElementById("mapare");
-        var widthW = 100; // 初始化默认宽度
+        var widthW = 81; // 初始化默认宽度
         img.style.width = `${widthW}%`; // 赋值默认宽度
         //         container.onmouseover = ()=> {  // 鼠标经过事件
         //         img.onmousewheel = (b)=> {  // 鼠标滚动事件
